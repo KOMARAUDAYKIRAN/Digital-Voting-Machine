@@ -1,0 +1,26 @@
+module VotingMachine (
+input wire clk,
+input wire reset,
+input wire [1:0] vote, // 2-bit input representing candidate selection (00, 01, 10, 11)
+output reg [3:0] vote_count_0, // Count for candidate 0
+output reg [3:0] vote_count_1, // Count for candidate 1
+output reg [3:0] vote_count_2, // Count for candidate 2
+output reg [3:0] vote_count_3 // Count for candidate 3
+);
+always @(posedge clk or posedge reset) begin
+if (reset) begin
+vote_count_0 <= 4'b0000;
+vote_count_1 <= 4'b0000;
+vote_count_2 <= 4'b0000;
+vote_count_3 <= 4'b0000;
+end else begin
+case (vote)
+2'b00: vote_count_0 <= vote_count_0 + 1;
+2'b01: vote_count_1 <= vote_count_1 + 1;
+2'b10: vote_count_2 <= vote_count_2 + 1;
+2'b11: vote_count_3 <= vote_count_3 + 1;
+default: ;
+endcase
+end
+end
+endmodule
