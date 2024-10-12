@@ -1,0 +1,45 @@
+module tb_VotingMachine;
+
+reg clk;
+reg reset;
+reg [1:0] vote;
+wire [3:0] vote_count_0;
+wire [3:0] vote_count_1;
+wire [3:0] vote_count_2;
+wire [3:0] vote_count_3;
+VotingMachine uut (
+.clk(clk),
+.reset(reset),
+.vote(vote),
+.vote_count_0(vote_count_0),
+.vote_count_1(vote_count_1),
+.vote_count_2(vote_count_2),
+.vote_count_3(vote_count_3)
+);
+initial begin
+// Initialize signals
+clk = 0;
+reset = 0;
+vote = 2'b00;
+// Create VCD file
+$dumpfile("dump.vcd");
+$dumpvars(0, tb_VotingMachine);
+// Reset the system
+reset = 1;
+#5 reset = 0;
+// Simulate voting
+#10 vote = 2'b00; // Vote for candidate 0
+#10 vote = 2'b01; // Vote for candidate 1
+#10 vote = 2'b10; // Vote for candidate 2
+#10 vote = 2'b11; // Vote for candidate 3
+#10 vote = 2'b00; // Vote for candidate 0
+#10 vote = 2'b01; // Vote for candidate 1
+#10 vote = 2'b10; // Vote for candidate 2
+#10 vote = 2'b11; // Vote for candidate 3
+// Finish simulation
+#20 $finish;
+end
+// Clock generation
+
+always #5 clk = ~clk;
+endmodule
